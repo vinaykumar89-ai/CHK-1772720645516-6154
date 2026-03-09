@@ -2,6 +2,74 @@ import streamlit as st
 from gtts import gTTS
 import tempfile
 import datetime
+import json
+import os
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if not st.session_state.logged_in:
+
+    st.title("MedGuide Login")
+
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("Login"):
+
+            with open("users.json", "r") as f:
+                users = json.load(f)
+
+            found = False
+
+            for user in users:
+                if user["email"] == email and user["password"] == password:
+                    found = True
+                    break
+
+            if found:
+                st.session_state.logged_in = True
+                st.rerun()
+            else:
+                st.error("Invalid login")
+
+    with col2:
+        if st.button("Create Account"):
+            with open("users.json", "r") as f:
+                users = json.load(f)
+
+            users.append({"email": email, "password": password})
+
+            with open("users.json", "w") as f:
+                json.dump(users, f)
+
+            st.success("Account created successfully")
+
+    st.stop()
+
+users_file = "users.json"
+
+def load_users():
+    if os.path.exists(users_file):
+        with open(users_file, "r") as f:
+            return json.load(f)
+    return []
+
+def save_user(email, password):
+    users = load_users()
+    users.append({"email": email, "password": password})
+    with open(users_file, "w") as f:
+        json.dump(users, f)
+
+def authenticate(email, password):
+    users = load_users()
+    for user in users:
+        if user["email"] == email and user["password"] == password:
+            return True
+    return False
 
 if "page" not in st.session_state:
     st.session_state.page = "home"
@@ -157,6 +225,30 @@ with col6:
     <p>Emergency help button</p>
     </div>
     """, unsafe_allow_html=True)
+
+if not st.session_state.logged_in:
+
+    st.title("MedGuide Login")
+
+    option = st.radio("Select", ["Login", "Create Account"])
+
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+
+    if option == "Login":
+        if st.button("Login"):
+            if authenticate(email, password):
+                st.session_state.logged_in = True
+                st.success("Login successful")
+            else:
+                st.error("Invalid email or password")
+
+    else:
+        if st.button("Create Account"):
+            save_user(email, password)
+            st.success("Account created. Please login.")
+
+    st.stop()
 
 
 
