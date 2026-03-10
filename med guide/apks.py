@@ -1,5 +1,5 @@
 import streamlit as st
-from mock_database import init_db
+from gsheets_db import init_db
 from doctor_dashboard import doctor_view
 from patient_dashboard import patient_view
 
@@ -85,7 +85,7 @@ if 'language' not in st.session_state:
 
 # --- SCREEN 1: LOGIN ---
 if st.session_state.logged_in_user is None:
-    st.title("🏥 ElderCare Portal Login")
+    st.title("🏥 Med-Guide Login")
     col1, col2 = st.columns([1, 1])
     
     with col1:
