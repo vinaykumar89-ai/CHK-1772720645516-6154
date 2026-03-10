@@ -44,3 +44,28 @@ def update_missed_pills(username, new_count):
         if cell:
             # Assuming 'missed_count' is in the column right next to the username
             worksheet.update_cell(cell.row, cell.col + 1, new_count)
+# 5. Initialize the session state so the main app doesn't crash
+def init_db():
+    if 'users' not in st.session_state:
+        st.session_state.users = {'patient1': '1234', 'doctor1': 'admin'}
+        
+    if 'patients' not in st.session_state:
+        st.session_state.patients = {
+            'patient1': {
+                'name': 'John Doe',
+                'doctor': None,
+                'missed_count': 0,
+                'meds': {'Morning': False, 'Afternoon': False, 'Night': False},
+                'alerted': {'Morning': False, 'Afternoon': False, 'Night': False},
+                'chats': [],
+                'next_pill': 'Afternoon (Metformin)'
+            }
+        }
+        
+    if 'doctors' not in st.session_state:
+        st.session_state.doctors = {
+            'doctor1': {
+                'name': 'Dr. Sarah Smith', 
+                'appointments': ['John Doe requested a checkup for this Friday at 10:00 AM.']
+            }
+        }            

@@ -8,9 +8,17 @@ def init_db():
         st.session_state.patients = {
             'patient1': {
                 'name': 'John Doe',
+                # --- NEW PROFILE FIELDS ---
+                'profile_completed': False, 
+                'age': None,
+                'address': '',
+                'chronic_disease': '',
+                'emergency_contact': '',
+                # --------------------------
                 'doctor': None,
                 'missed_count': 0,
                 'meds': {'Morning': False, 'Afternoon': False, 'Night': False},
+                'alerted': {'Morning': False, 'Afternoon': False, 'Night': False},
                 'chats': [],
                 'next_pill': 'Afternoon (Metformin)'
             }
