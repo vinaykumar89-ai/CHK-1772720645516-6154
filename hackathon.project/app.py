@@ -4,6 +4,56 @@ import tempfile
 import datetime
 import json
 import os
+import streamlit as st
+
+# Save selected language
+if "language" not in st.session_state:
+    st.session_state.language = "English"
+
+# Language selector
+st.session_state.language = st.selectbox(
+    "Choose Language / भाषा निवडा / भाषा चुनें",
+    ["English", "Hindi", "Marathi"]
+)
+
+translations = {
+
+"English": {
+"title": "MedGuide",
+"question": "What would you like to do?",
+"search": "Search Medicine",
+"scan": "Scan Barcode",
+"reminder": "Reminders",
+"history": "History",
+"speech": "Text to Speech",
+"alert": "Medical Alert"
+},
+
+"Hindi": {
+"title": "मेडगाइड",
+"question": "आप क्या करना चाहेंगे?",
+"search": "दवा खोजें",
+"scan": "बारकोड स्कैन करें",
+"reminder": "रिमाइंडर",
+"history": "इतिहास",
+"speech": "टेक्स्ट को आवाज़ में बदलें",
+"alert": "चिकित्सा अलर्ट"
+},
+
+"Marathi": {
+"title": "मेडगाईड",
+"question": "आपण काय करू इच्छिता?",
+"search": "औषध शोधा",
+"scan": "बारकोड स्कॅन करा",
+"reminder": "स्मरणपत्र",
+"history": "इतिहास",
+"speech": "मजकूर आवाजात बदला",
+"alert": "वैद्यकीय सूचना"
+}
+
+}
+
+t = translations[st.session_state.language]
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
@@ -136,17 +186,19 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Header
-st.markdown("""
+st.markdown(f"""
 <div class="main-title">
- MedGuide
+ {t["title"]}
 <div class="subtitle">Your simple medicine information helper</div>
 </div>
 """, unsafe_allow_html=True)
 
+
+
 st.write("")
 st.write("")
 
-st.markdown("<h2 style='text-align:center;'>What would you like to do?</h2>", unsafe_allow_html=True)
+st.markdown(f"<h2 style='text-align:center;'>{t['question']}</h2>", unsafe_allow_html=True)
 
 st.write("")
 
@@ -154,20 +206,20 @@ st.write("")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown("""
+    st.markdown(f"""
     <div class="card green">
     <img src="https://cdn-icons-png.flaticon.com/512/751/751463.png" width="50">
-    <h2>Search Medicine</h2>
+    <h2>{t["search"]}</h2>
     <p>Find by name</p>
     </div>
     """, unsafe_allow_html=True)
 
 
 with col2:
-    st.markdown("""
+    st.markdown(f"""
     <div class="card orange">
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSeobxuQMyRRj9SbjEGtazly8WakEH2USLAQ&s" width="60">
-    <h2>Scan Barcode</h2>
+    <h2>{t["scan"]}</h2>
     <p>Scan medicine QR / barcode</p>
     </div>
     """, unsafe_allow_html=True)
@@ -177,19 +229,19 @@ st.write("")
 col3, col4 = st.columns(2)
 
 with col3:
-    st.markdown("""
+    st.markdown(f"""
     <div class="card darkgreen">
     <img src="https://cdn-icons-png.flaticon.com/512/1827/1827392.png" width="60">
-    <h2>Reminders</h2>
+    <h2>{t["reminder"]}</h2>
     <p>Set medicine alerts</p>
     </div>
     """, unsafe_allow_html=True)
 
 with col4:
-    st.markdown("""
+    st.markdown(f"""
     <div class="card orange">
     <img src="https://cdn-icons-png.flaticon.com/512/2961/2961948.png" width="60">
-    <h2>History</h2>
+    <h2>{t["history"]}</h2>
     <p>Past searches</p>
     </div>
     """, unsafe_allow_html=True)
@@ -209,19 +261,19 @@ st.write("")
 col5, col6 = st.columns(2)
 
 with col5:
-    st.markdown("""
+    st.markdown(f"""
     <div class="card green">
     <img src="https://cdn-icons-png.flaticon.com/512/727/727269.png" width="60">
-    <h2>Text to Speech</h2>
+    <h2>{t["speech"]}</h2>
     <p>Listen to medicine instructions</p>
     </div>
     """, unsafe_allow_html=True)
 
 with col6:
-    st.markdown("""
+    st.markdown(f"""
     <div class="card orange">
     <img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png" width="60">
-    <h2>Medical Alert</h2>
+    <h2>{t["alert"]}</h2>
     <p>Emergency help button</p>
     </div>
     """, unsafe_allow_html=True)
